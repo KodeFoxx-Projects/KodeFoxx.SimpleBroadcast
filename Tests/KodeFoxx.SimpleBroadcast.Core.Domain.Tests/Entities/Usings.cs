@@ -1,1 +1,0 @@
-﻿global using KodeFoxx.SimpleBroadcast.Core.Domain.Tests.Entities;
