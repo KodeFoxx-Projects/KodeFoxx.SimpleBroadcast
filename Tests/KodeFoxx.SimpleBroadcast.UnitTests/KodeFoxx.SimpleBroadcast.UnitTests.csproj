@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Source\Common\KodeFoxx.SimpleBroadcast.Common\KodeFoxx.SimpleBroadcast.Common.csproj" />
     <ProjectReference Include="..\..\Source\Core\KodeFoxx.SimpleBroadcast.Core.Domain\KodeFoxx.SimpleBroadcast.Core.Domain.csproj" />
+    <ProjectReference Include="..\..\Source\Infrastructure\Persistence\KodeFoxx.SimpleBroadcast.Persistence.Sqlite\KodeFoxx.SimpleBroadcast.Persistence.Sqlite.csproj" />
   </ItemGroup>
 
   <ItemGroup>
