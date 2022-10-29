@@ -10,10 +10,11 @@ public sealed class SimpleBroadcastDatabase : DbContext
         => _sqliteDatabaseFile = sqliteDatabaseFile ?? SqliteDatabaseFileInfo.Default;
 
 
-    protected override void OnConfiguring(
-        DbContextOptionsBuilder optionsBuilder
-    )
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlite($"Data Source={_sqliteDatabaseFile.FullPath}");
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        => modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
 
     public DbSet<Artist> Artists { get; set; }
     public DbSet<Song> Songs { get; set; }

@@ -20,14 +20,14 @@ public sealed class Tracklist : SimpleBroadcastEntity
     private Tracklist() : this(0) { }
 
     private readonly List<Segment> _segments;
-    public IReadOnlyCollection<Segment> TracklistEntries => _segments;
+    public IReadOnlyCollection<Segment> Segments => _segments;
 
     public Tracklist AddSong(SongSegment songSegment)
         => AddSegment(songSegment);
 
     private Tracklist AddSegment(Segment segment)
     {
-        if (segment.Equals(Empty))
+        if (segment.Equals(Segment.Empty))
             throw new ArgumentException(
                 message: $"Can not add an empty '{typeof(Segment).Name}'",
                 paramName: nameof(segment)
