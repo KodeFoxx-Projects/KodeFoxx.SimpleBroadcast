@@ -21,4 +21,10 @@
     <Folder Include="Resources\Images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\Images\Splash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
