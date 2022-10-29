@@ -48,9 +48,9 @@
             // 
             this.applicationNameAndVersionLabel.AutoSize = true;
             this.applicationNameAndVersionLabel.BackColor = System.Drawing.Color.Transparent;
-            this.applicationNameAndVersionLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.applicationNameAndVersionLabel.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.applicationNameAndVersionLabel.ForeColor = System.Drawing.Color.Azure;
-            this.applicationNameAndVersionLabel.Location = new System.Drawing.Point(30, 57);
+            this.applicationNameAndVersionLabel.Location = new System.Drawing.Point(29, 59);
             this.applicationNameAndVersionLabel.Name = "applicationNameAndVersionLabel";
             this.applicationNameAndVersionLabel.Size = new System.Drawing.Size(61, 15);
             this.applicationNameAndVersionLabel.TabIndex = 4;
