@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KodeFoxx.SimpleBroadcast.Pe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KodeFoxx.SimpleBroadcast.Presentation.App", "Source\Presentation\KodeFoxx.SimpleBroadcast.Presentation.App\KodeFoxx.SimpleBroadcast.Presentation.App.csproj", "{5D82D92A-37A1-4B7D-A29D-6E1DB78C1128}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KodeFoxx.SimpleBroadcast.Presentation.WindowsApp", "Source\Presentation\KodeFoxx.SimpleBroadcast.Presentation.WindowsApp\KodeFoxx.SimpleBroadcast.Presentation.WindowsApp.csproj", "{68E755CB-C034-4028-B11E-7F41F1C66A9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{5D82D92A-37A1-4B7D-A29D-6E1DB78C1128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D82D92A-37A1-4B7D-A29D-6E1DB78C1128}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D82D92A-37A1-4B7D-A29D-6E1DB78C1128}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{68E755CB-C034-4028-B11E-7F41F1C66A9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68E755CB-C034-4028-B11E-7F41F1C66A9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68E755CB-C034-4028-B11E-7F41F1C66A9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68E755CB-C034-4028-B11E-7F41F1C66A9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{BC32CCA4-44C1-46E0-974D-29780225DA88} = {E4004917-24DE-46DC-B139-ABF6FAFEC63B}
 		{97A93EA0-4575-45A0-930D-BD230F43E342} = {B191D1BD-804B-4BE7-9A99-AD25E77502B5}
 		{5D82D92A-37A1-4B7D-A29D-6E1DB78C1128} = {6DA7CC4D-9B09-4949-B68F-14115F297446}
+		{68E755CB-C034-4028-B11E-7F41F1C66A9F} = {6DA7CC4D-9B09-4949-B68F-14115F297446}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {534E0EAF-100F-4D3A-98AB-E372040126C6}
