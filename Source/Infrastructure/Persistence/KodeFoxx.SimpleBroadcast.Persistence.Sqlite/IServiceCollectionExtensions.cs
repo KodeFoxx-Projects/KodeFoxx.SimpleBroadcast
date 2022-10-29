@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace KodeFoxx.SimpleBroadcast.Persistence.Sqlite;
+﻿namespace KodeFoxx.SimpleBroadcast.Persistence.Sqlite;
 
 public static class IServiceCollectionExtensions
 {
