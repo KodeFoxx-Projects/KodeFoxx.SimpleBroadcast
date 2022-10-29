@@ -28,21 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.applicationNameLabel = new System.Windows.Forms.Label();
             this.applicationNameAndVersionLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label1
+            // applicationNameLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label1.Location = new System.Drawing.Point(25, 48);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(393, 40);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "S I M P L E B R O A D C A S T";
+            this.applicationNameLabel.AutoSize = true;
+            this.applicationNameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.applicationNameLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 19F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.applicationNameLabel.ForeColor = System.Drawing.Color.AliceBlue;
+            this.applicationNameLabel.Location = new System.Drawing.Point(25, 26);
+            this.applicationNameLabel.Name = "applicationNameLabel";
+            this.applicationNameLabel.Size = new System.Drawing.Size(349, 36);
+            this.applicationNameLabel.TabIndex = 2;
+            this.applicationNameLabel.Text = "S I M P L E B R O A D C A S T";
             // 
             // applicationNameAndVersionLabel
             // 
@@ -50,7 +50,7 @@
             this.applicationNameAndVersionLabel.BackColor = System.Drawing.Color.Transparent;
             this.applicationNameAndVersionLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.applicationNameAndVersionLabel.ForeColor = System.Drawing.Color.Azure;
-            this.applicationNameAndVersionLabel.Location = new System.Drawing.Point(30, 86);
+            this.applicationNameAndVersionLabel.Location = new System.Drawing.Point(30, 57);
             this.applicationNameAndVersionLabel.Name = "applicationNameAndVersionLabel";
             this.applicationNameAndVersionLabel.Size = new System.Drawing.Size(61, 15);
             this.applicationNameAndVersionLabel.TabIndex = 4;
@@ -62,8 +62,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 400);
             this.ControlBox = false;
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.applicationNameAndVersionLabel);
+            this.Controls.Add(this.applicationNameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -80,7 +80,7 @@
         }
 
         #endregion
-        private Label label1;
+        private Label applicationNameLabel;
         private Label applicationNameAndVersionLabel;
     }
 }
