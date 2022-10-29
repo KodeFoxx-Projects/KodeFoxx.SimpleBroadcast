@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.applicationNameAndVersionLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -37,25 +36,13 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semilight", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.AliceBlue;
             this.label1.Location = new System.Drawing.Point(25, 48);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(148, 40);
+            this.label1.Size = new System.Drawing.Size(393, 40);
             this.label1.TabIndex = 2;
-            this.label1.Text = "S I M P L E";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label2.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label2.Location = new System.Drawing.Point(166, 48);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(248, 40);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "B R O A D C A S T";
+            this.label1.Text = "S I M P L E B R O A D C A S T";
             // 
             // applicationNameAndVersionLabel
             // 
@@ -75,7 +62,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 400);
             this.ControlBox = false;
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.applicationNameAndVersionLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -95,7 +81,6 @@
 
         #endregion
         private Label label1;
-        private Label label2;
         private Label applicationNameAndVersionLabel;
     }
 }
