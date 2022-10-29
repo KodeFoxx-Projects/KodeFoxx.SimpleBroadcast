@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "KodeFoxx.SimpleBroadcast.Presentation.WindowsApp": {
+      "commandName": "Project",
+      "commandLineArgs": "--debug"
+    }
+  }
+}
