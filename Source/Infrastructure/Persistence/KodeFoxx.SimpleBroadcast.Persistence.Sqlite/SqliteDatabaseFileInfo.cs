@@ -18,15 +18,15 @@ public sealed class SqliteDatabaseFileInfo
     )
     {
         var cleanedFileName = String.IsNullOrEmpty(fileName)
-            ? "simplebroadcast"
+            ? CleanFileName("simplebroadcast")
             : CleanFileName(fileName);
 
         var cleanedDirectory = String.IsNullOrEmpty(directory)
-            ? Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+            ? CleanDirectoryPath(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData))
             : CleanDirectoryPath(directory);
 
         var cleanedExtension = String.IsNullOrEmpty(extension)
-            ? ".sbdb"
+            ? CleanFileNameExtension(".sbdb")
             : CleanFileNameExtension(extension);
 
         var cleanedFileNameAndPath = Path.Combine(
@@ -35,6 +35,7 @@ public sealed class SqliteDatabaseFileInfo
             "SimpleBroadcast",
             $"{cleanedFileName}{cleanedExtension}"
         );
+
         _fileInfo = new FileInfo(cleanedFileNameAndPath);
     }
 
@@ -51,11 +52,13 @@ public sealed class SqliteDatabaseFileInfo
     {
         var invalidCharacters = Path.GetInvalidFileNameChars();
         var cleanedFileName = String.Concat(fileName.Split(invalidCharacters));
+
         if (cleanedFileName.Contains("."))
         {
             var extension = cleanedFileName.Substring(cleanedFileName.LastIndexOf("."));
-            cleanedFileName.Replace(extension, "");
-            cleanedFileName.Replace(".", "-");
+            cleanedFileName = cleanedFileName
+                .Replace(".", "-")
+                .Replace(extension, "");
         }
 
         return cleanedFileName;
@@ -70,9 +73,14 @@ public sealed class SqliteDatabaseFileInfo
     private string CleanFileNameExtension(string extension)
     {
         var invalidCharacters = Path.GetInvalidFileNameChars();
+        var lowercaseAlphabet = "abcdefghijklmnopqrstuvwxyz".ToArray();
         var cleanedExtension = String.Concat(extension.Split(invalidCharacters));
-        if (!cleanedExtension.StartsWith("."))
-            cleanedExtension = $".{cleanedExtension}";
+        cleanedExtension = $".{cleanedExtension.Replace(".", "")}".ToLower();
+
+        cleanedExtension = String.Join("", cleanedExtension
+                .Where(@char => lowercaseAlphabet.Contains(@char) || @char.Equals('.'))
+                .Select(@char => @char)
+        );
 
         return cleanedExtension;
     }
