@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 
 namespace KodeFoxx.SimpleBroadcast.Core.Application.Application;
 
@@ -17,14 +18,25 @@ public sealed class GetApplicationVersion
     {
         public Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();            
             var dateTime = File.GetLastWriteTimeUtc(assembly.Location)
                     .ToString()
                     .Replace(" ", "-")
                     .Replace(":", "")
                     .Replace(@"/", "");
 
-            return Task.FromResult(new Response($"preview 0.1 -{dateTime}"));
+            var versionString = $"0.1-{dateTime}-PRV";
+
+#if(DEBUG)
+            versionString = $"{versionString}-DBG";
+#else
+            versionString = $"{versionString}-RLS";
+#endif
+
+            if (Debugger.IsAttached)
+                versionString = $"debugging: {versionString}";
+
+            return Task.FromResult(new Response(versionString));
         }
     }
 }

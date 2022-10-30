@@ -7,6 +7,8 @@ namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp
     {
         protected readonly IMediator _mediator;
 
+        public BaseForm() { }
+
         public BaseForm(IMediator mediator)
         {
             InitializeComponent();
