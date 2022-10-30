@@ -6,8 +6,6 @@ public sealed class SongEntityTypeConfiguration : IEntityTypeConfiguration<Song>
 {
     public void Configure(EntityTypeBuilder<Song> builder)
     {
-        builder.ToTable("Songs");
-
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Title)

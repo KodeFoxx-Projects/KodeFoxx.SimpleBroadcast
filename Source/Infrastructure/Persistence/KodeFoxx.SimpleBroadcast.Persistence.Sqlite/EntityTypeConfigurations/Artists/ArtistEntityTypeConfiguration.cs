@@ -6,8 +6,6 @@ public sealed class ArtistEntityTypeConfiguration : IEntityTypeConfiguration<Art
 {
     public void Configure(EntityTypeBuilder<Artist> builder)
     {
-        builder.ToTable("Artists");
-
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Principal)

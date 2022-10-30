@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KodeFoxx.SimpleBroadcast.Persistence.Sqlite.Migrations
 {
     [DbContext(typeof(SimpleBroadcastDatabase))]
-    [Migration("20221029164259_InitialCreate")]
+    [Migration("20221030090542_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace KodeFoxx.SimpleBroadcast.Persistence.Sqlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Artists", (string)null);
+                    b.ToTable("Artists");
                 });
 
             modelBuilder.Entity("KodeFoxx.SimpleBroadcast.Core.Domain.Artists.Song", b =>
@@ -50,7 +50,7 @@ namespace KodeFoxx.SimpleBroadcast.Persistence.Sqlite.Migrations
 
                     b.HasIndex("ArtistId");
 
-                    b.ToTable("Songs", (string)null);
+                    b.ToTable("Songs");
                 });
 
             modelBuilder.Entity("KodeFoxx.SimpleBroadcast.Core.Domain.Artists.Song", b =>

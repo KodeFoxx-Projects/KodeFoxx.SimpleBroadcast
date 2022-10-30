@@ -2,22 +2,19 @@
 
 public sealed class SimpleBroadcastDatabase : DbContext
 {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    public SimpleBroadcastDatabase() { }
 
-    private readonly SqliteDatabaseFileInfo _sqliteDatabaseFile;
-
-    public SimpleBroadcastDatabase(SqliteDatabaseFileInfo? sqliteDatabaseFile = null)
-        => _sqliteDatabaseFile = sqliteDatabaseFile ?? SqliteDatabaseFileInfo.Default;
-
+    public SimpleBroadcastDatabase(DbContextOptions<SimpleBroadcastDatabase> options)
+        : base(options)
+    {
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite($"Data Source={_sqliteDatabaseFile.FullPath}");
+        => optionsBuilder.UseSqlite($"Data Source={SqliteDatabaseFileInfo.Default.FullPath}");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         => modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
 
-    public DbSet<Artist> Artists { get; set; }
-    public DbSet<Song> Songs { get; set; }
-
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    public DbSet<Artist> Artists => Set<Artist>();
+    public DbSet<Song> Songs => Set<Song>();
 }

@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="EntityTypeConfigurations\Shows\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
-﻿namespace KodeFoxx.SimpleBroadcast.Persistence.Sqlite;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+
+namespace KodeFoxx.SimpleBroadcast.Persistence.Sqlite;
 
 public sealed class SqliteDatabaseFileInfo
 {
@@ -10,6 +12,18 @@ public sealed class SqliteDatabaseFileInfo
         string? extension = null
     )
         => new SqliteDatabaseFileInfo(fileName, directory, extension);
+
+    internal static SqliteDatabaseFileInfo? CreateFromDatabase(
+        DatabaseFacade database
+    )
+    {
+        var connectionString = database.GetConnectionString();
+        var fileInfo = new FileInfo(connectionString.ToLower().Replace("data source=", ""));
+        return Create(
+            Path.GetFileNameWithoutExtension(fileInfo.FullName),
+            fileInfo.Directory.FullName,
+            fileInfo.Extension);
+    }
 
     private SqliteDatabaseFileInfo(
         string? fileName = null,

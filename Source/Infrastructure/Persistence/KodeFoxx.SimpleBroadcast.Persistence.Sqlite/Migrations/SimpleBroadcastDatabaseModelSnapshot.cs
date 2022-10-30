@@ -28,7 +28,7 @@ namespace KodeFoxx.SimpleBroadcast.Persistence.Sqlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Artists", (string)null);
+                    b.ToTable("Artists");
                 });
 
             modelBuilder.Entity("KodeFoxx.SimpleBroadcast.Core.Domain.Artists.Song", b =>
@@ -48,7 +48,7 @@ namespace KodeFoxx.SimpleBroadcast.Persistence.Sqlite.Migrations
 
                     b.HasIndex("ArtistId");
 
-                    b.ToTable("Songs", (string)null);
+                    b.ToTable("Songs");
                 });
 
             modelBuilder.Entity("KodeFoxx.SimpleBroadcast.Core.Domain.Artists.Song", b =>

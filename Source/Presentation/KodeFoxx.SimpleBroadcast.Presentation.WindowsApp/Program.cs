@@ -1,3 +1,5 @@
+using KodeFoxx.SimpleBroadcast.Persistence.Sqlite;
+
 namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp;
 
 internal static class Program
@@ -32,6 +34,8 @@ internal static class Program
         {
             services.AddSingleton(_appSettings);
             services.AddSingleton(_appSettings.Configuration);
+
+            services.AddAndConfigurePersistence(_appSettings.Configuration, _appSettings.Data);
 
             services.AddFormsAsTransient();
         });
