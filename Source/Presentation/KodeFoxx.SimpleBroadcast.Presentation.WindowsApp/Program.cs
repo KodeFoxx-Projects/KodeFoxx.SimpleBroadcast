@@ -18,14 +18,14 @@ internal static class Program
     static void Main()
     {
         InitializeWindowsFormsSettings();
-        InitializeAndShowSplashScreen();
+        InitializeAndShowSplashScreen<Splash>();
 
         InitializeConfigurationAndAppLoadSettings();
         InitializeAndCreateHost();
 
         LoadOrCreateDatabase();
 
-        InitializeMainScreenAndCloseSplashScreen();
+        InitializeMainScreenAndCloseSplashScreen<Main>();
     }
 
     private static IHostBuilder CreateHostBuilder()
@@ -65,9 +65,10 @@ internal static class Program
         Application.SetCompatibleTextRenderingDefault(false);
         ApplicationConfiguration.Initialize();
     }
-    private static void InitializeAndShowSplashScreen()
+    private static void InitializeAndShowSplashScreen<TForm>()
+        where TForm : Form, new()
     {
-        _splashScreen = new Splash();
+        _splashScreen = new TForm();
         _splashScreen.Show();
         _splashScreen.Activate();
         _splashScreen.Refresh();
@@ -79,9 +80,10 @@ internal static class Program
         _host = CreateHostBuilder().Build();
         _serviceProvider = _host.Services;
     }
-    private static void InitializeMainScreenAndCloseSplashScreen()
+    private static void InitializeMainScreenAndCloseSplashScreen<TForm>()
+        where TForm : BaseForm
     {
-        _mainScreen = _serviceProvider.GetRequiredService<BaseForm>();
+        _mainScreen = _serviceProvider.GetRequiredService<TForm>();
         _mainScreen.Load += (s, e) =>
         {
             if (_splashScreen != null
