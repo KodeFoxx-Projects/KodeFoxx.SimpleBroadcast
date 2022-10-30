@@ -1,6 +1,6 @@
 ﻿namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp
 {
-    partial class Main
+    partial class BaseForm
     {
         /// <summary>
         /// Required designer variable.

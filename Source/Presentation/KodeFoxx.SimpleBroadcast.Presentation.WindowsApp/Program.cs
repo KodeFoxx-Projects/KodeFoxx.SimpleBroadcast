@@ -81,7 +81,7 @@ internal static class Program
     }
     private static void InitializeMainScreenAndCloseSplashScreen()
     {
-        _mainScreen = _serviceProvider.GetRequiredService<Main>();
+        _mainScreen = _serviceProvider.GetRequiredService<BaseForm>();
         _mainScreen.Load += (s, e) =>
         {
             if (_splashScreen != null
