@@ -24,6 +24,10 @@ public sealed class SqliteDatabaseFileInfo
             fileInfo.Directory.FullName,
             fileInfo.Extension);
     }
+    internal static SqliteDatabaseFileInfo? CreateFromDatabase(
+        SimpleBroadcastDatabase simpleBroadcastDatabase
+    )
+        => CreateFromDatabase(simpleBroadcastDatabase.Database);
 
     private SqliteDatabaseFileInfo(
         string? fileName = null,

@@ -1,5 +1,3 @@
-using KodeFoxx.SimpleBroadcast.Persistence.Sqlite;
-
 namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp;
 
 internal static class Program
@@ -91,6 +89,7 @@ internal static class Program
             _mainScreen.TopMost = true;
             _mainScreen.Activate();
             _mainScreen.TopMost = false;
+            _mainScreen.ShowInTaskbar = true;
         };
 
         Application.Run(_mainScreen);

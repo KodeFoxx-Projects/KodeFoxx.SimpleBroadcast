@@ -1,5 +1,3 @@
-using System.Reflection;
-
 namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp
 {
     public partial class Splash : Form
@@ -21,15 +19,7 @@ namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp
         }
 
         private void ShowSplashText()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var dateTime = File.GetLastWriteTimeUtc(assembly.Location)
-                .ToString()
-                .Replace(" ", "-")
-                .Replace(":", "")
-                .Replace(@"/", "");
-            applicationNameAndVersionLabel.Text = $"preview version 0.1-{dateTime}";
-        }
+            => applicationNameAndVersionLabel.Text = ApplicationExtensions.GetVersion();
 
         private void Splash_Load(object sender, EventArgs e)
         {

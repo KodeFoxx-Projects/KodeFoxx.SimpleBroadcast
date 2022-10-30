@@ -1,6 +1,4 @@
-﻿using KodeFoxx.SimpleBroadcast.Persistence.Sqlite.Settings;
-
-namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp.Settings;
+﻿namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp.Settings;
 
 public sealed class AppSettings
 {
