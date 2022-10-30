@@ -72,13 +72,13 @@ public partial class Main : BaseForm
     private void artistsOverview_AfterLabelEdit(object sender, LabelEditEventArgs e)
     {
         if (e.Label == null)
-            return;
+            return;        
 
         var newValue = e.Label;
         var listViewItem = artistsOverview.Items[e.Item];
         var artistId = (long)listViewItem.Tag;
 
-        var response = _mediator.Send(new EditArtistPrincipal.Request(artistId, newValue)).Result;
+        var response = _mediator.Send(new EditOrCreateArtistPrincipal.Request(artistId, newValue)).Result;
 
         LoadArtists();
     }
@@ -86,6 +86,16 @@ public partial class Main : BaseForm
     private void artistsOverviewQuickSearchInput_TextChanged(object sender, EventArgs e)
     {
         LoadArtists();
+    }
+
+    private void artistsOverview_MouseUp(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Right)
+        {
+            var newItem = artistsOverview.Items.Add("");
+            newItem.Tag = 0L;
+            newItem.BeginEdit();
+        }
     }
 
     private void FillListView<TObject>(
@@ -109,5 +119,7 @@ public partial class Main : BaseForm
         headerPanel.BackgroundImage = Image.FromFile(
             Path.Combine("Resources", "Images", "Header.png")
         );        
-    }    
+    }
+
+    
 }

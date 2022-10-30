@@ -4,6 +4,9 @@ public sealed class Artist : SimpleBroadcastEntity
 {
     public static readonly Artist Empty = new Artist();
 
+    public static Artist Create(string principalName)
+        => new Artist(principal: principalName);
+
     private Artist(
         long? id = null,
         string? principal = null,
@@ -43,5 +46,5 @@ public sealed class Artist : SimpleBroadcastEntity
         Principal = principalName;
 
         return this;
-    }
+    }    
 }

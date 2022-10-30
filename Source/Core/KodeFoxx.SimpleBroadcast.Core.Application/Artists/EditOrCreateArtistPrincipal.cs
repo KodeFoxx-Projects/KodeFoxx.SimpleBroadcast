@@ -2,7 +2,7 @@
 
 namespace KodeFoxx.SimpleBroadcast.Core.Application.Artists;
 
-public sealed class EditArtistPrincipal
+public sealed class EditOrCreateArtistPrincipal
 {
     public sealed class Request : IRequest<Response> 
     {
@@ -26,11 +26,19 @@ public sealed class EditArtistPrincipal
 
         public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
-            var artist = await _db.Artists.Where(a => a.Id == request.ArtistId).FirstAsync();
-            artist.EditPrincipal(request.PrincipalName);
+            var artist = await _db.Artists.Where(a => a.Id == request.ArtistId).FirstOrDefaultAsync();
+
+            if (artist != null)
+            {
+                artist.EditPrincipal(request.PrincipalName);                
+            } 
+            else
+            {
+                var newArtist = Artist.Create(request.PrincipalName);
+                _db.Artists.Add(newArtist);
+            }
 
             await _db.SaveChangesAsync();
-
             return new Response();
         }
     }

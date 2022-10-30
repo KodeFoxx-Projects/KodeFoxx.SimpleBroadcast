@@ -31,7 +31,9 @@ public sealed class GetArtists
             if (!String.IsNullOrWhiteSpace(request.Query))
             {
                 artists = artists.Where(a => a.Principal.ToLower().Contains(request.Query.ToLower()));
-            }            
+            }
+
+            artists.OrderBy(a => a.Principal);
 
             return new Response(await artists.ToListAsync());
         }
