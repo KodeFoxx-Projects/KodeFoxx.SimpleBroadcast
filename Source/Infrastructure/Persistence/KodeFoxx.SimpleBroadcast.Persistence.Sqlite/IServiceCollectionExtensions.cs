@@ -21,6 +21,9 @@ public static class IServiceCollectionExtensions
                 directory: dataSettings.DirectoryPath,
                 extension: dataSettings.Extension);
 
+        if(!Directory.Exists(sqliteDatabaseFile.Directory))
+            Directory.CreateDirectory(sqliteDatabaseFile.Directory);
+
         services.AddDbContext<SimpleBroadcastDatabase>(options =>
         {
             options.UseSqlite($"Data Source={sqliteDatabaseFile.FullPath}");
