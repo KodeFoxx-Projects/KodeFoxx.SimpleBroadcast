@@ -23,6 +23,8 @@ internal static class Program
         InitializeConfigurationAndAppLoadSettings();
         InitializeAndCreateHost();
 
+        LoadOrCreateDatabase();
+
         InitializeMainScreenAndCloseSplashScreen();
     }
 
@@ -47,6 +49,12 @@ internal static class Program
 
         _appSettings = configuration.Get<AppSettings>();
         _appSettings.BindConfiguration(configuration);
+    }
+
+    private static void LoadOrCreateDatabase()
+    {
+        var database = _serviceProvider.GetService<SimpleBroadcastDatabase>();
+        var created = database?.Database.EnsureCreated();
     }
 
     private static void InitializeWindowsFormsSettings()

@@ -15,7 +15,7 @@
             AppSettings = appSettings;
             Database = database;
 
-            Text = $"Simple Broadcast [ Version: {ApplicationExtensions.GetVersion()} | Db: {DatabaseName}]";
+            Text = $"Simple Broadcast [ {ApplicationExtensions.GetVersion()} | {DatabaseName}]";
         }
     }
 }
