@@ -15,7 +15,7 @@ public sealed class GetArtists
         public IReadOnlyCollection<Artist> Artists { get; }
 
         internal Response(IEnumerable<Artist> artists)
-            => Artists = artists.ToList();
+            => Artists = artists.OrderBy(a => a.Principal).ToList();
     }
 
     private sealed class Handler : IRequestHandler<Request, Response>
