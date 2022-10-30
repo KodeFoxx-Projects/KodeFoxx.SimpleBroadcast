@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using KodeFoxx.SimpleBroadcast.Core.Application.Artists;
+using KodeFoxx.SimpleBroadcast.Core.Domain.Artists;
+using MediatR;
 
 namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp;
 
@@ -9,6 +11,53 @@ public partial class Main : BaseForm
         InitializeComponent();        
         SetWindowTitle();
         SetHeader();
+
+        LoadArtists();
+    }
+
+    private List<Artist> _artists = new List<Artist>();
+    private Func<Artist, ListViewItem> _artistListViewItemSelector;        
+    private void LoadArtists()
+    {
+        _artists.Clear();
+
+
+        if(_artistListViewItemSelector == null)
+        {
+            _artistListViewItemSelector = a =>
+            {
+                var listViewItem = new ListViewItem(a.Principal);
+                listViewItem.Tag = a.Id;
+                listViewItem.Group = new ListViewGroup(a.Principal.First().ToString());
+                return listViewItem;
+            };
+        }
+
+        FillListView(artistsOverview, _artists, _artistListViewItemSelector);
+
+        artistsOverview.Alignment = ListViewAlignment.Left;
+        artistsOverview.View = View.List;
+        artistsOverview.LabelEdit = true;
+
+        var response = _mediator.Send(new GetArtists.Request()).Result;
+        _artists = response.Artists.ToList();
+
+        FillListView(artistsOverview, _artists, _artistListViewItemSelector);
+    }
+
+    private void FillListView<TObject>(
+        ListView listView, IEnumerable<TObject> objects, 
+        Func<TObject, ListViewItem> listViewItemLabelSelectorFunc)
+    {
+        listView.Items.Clear();
+        var listViewItems = objects.Select(o => listViewItemLabelSelectorFunc(o));
+        FillListView(listView, listViewItems);
+    }
+    private void FillListView(ListView listView, IEnumerable<ListViewItem> listViewItems)
+    {
+        listView.Items.Clear();
+        foreach (var listViewItem in listViewItems)
+            artistsOverview.Items.Add(listViewItem);
     }
 
     private void SetHeader()
@@ -17,5 +66,33 @@ public partial class Main : BaseForm
         headerPanel.BackgroundImage = Image.FromFile(
             Path.Combine("Resources", "Images", "Header.png")
         );        
+    }
+
+    private void artistsOverview_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+    {
+        //artistsOverview[e.ColumnIndex, e.RowIndex].
+    }
+
+    private void artistsOverview_DoubleClick(object sender, EventArgs e)
+    {
+        if (artistsOverview.SelectedItems.Count == 0)
+            return;
+
+        var selectedIndex = artistsOverview.SelectedItems[0].Index;
+        artistsOverview.Items[selectedIndex].BeginEdit();
+    }
+
+    private void artistsOverview_AfterLabelEdit(object sender, LabelEditEventArgs e)
+    {        
+        if(e.Label == null) 
+            return; 
+
+        var newValue = e.Label;
+        var listViewItem = artistsOverview.Items[e.Item];
+        var artistId = (long)listViewItem.Tag;
+
+        var response = _mediator.Send(new EditArtistPrincipal.Request(artistId, newValue)).Result;
+
+        LoadArtists();
     }
 }

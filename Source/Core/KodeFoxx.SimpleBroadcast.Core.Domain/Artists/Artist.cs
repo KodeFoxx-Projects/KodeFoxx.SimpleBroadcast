@@ -20,7 +20,7 @@ public sealed class Artist : SimpleBroadcastEntity
     }
     private Artist() : this(0) { }
 
-    public string Principal { get; }
+    public string Principal { get; private set; }
 
     private readonly List<Song> _songs;
     public IReadOnlyCollection<Song> Songs => _songs;
@@ -34,6 +34,13 @@ public sealed class Artist : SimpleBroadcastEntity
             );
 
         _songs.Add(song);
+
+        return this;
+    }
+
+    public Artist EditPrincipal(string principalName)
+    {
+        Principal = principalName;
 
         return this;
     }
