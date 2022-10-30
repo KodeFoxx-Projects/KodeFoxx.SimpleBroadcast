@@ -35,6 +35,7 @@ internal static class Program
             services.AddSingleton(_appSettings);
             services.AddSingleton(_appSettings.Configuration);
 
+            services.AddAndConfigureApplication(_appSettings.Configuration);
             services.AddAndConfigurePersistence(_appSettings.Configuration, _appSettings.Data);
 
             services.AddFormsAsTransient();
