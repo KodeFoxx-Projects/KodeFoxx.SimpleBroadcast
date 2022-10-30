@@ -14,7 +14,7 @@ public sealed class GetApplicationVersion
             => VersionString = versionString;
     }
 
-    private sealed class Handler : IRequestHandler<Request, Response>
+    public sealed class Handler : IRequestHandler<Request, Response>
     {
         public Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {

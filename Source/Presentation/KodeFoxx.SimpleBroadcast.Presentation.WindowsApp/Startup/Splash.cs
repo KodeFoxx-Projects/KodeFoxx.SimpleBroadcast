@@ -1,3 +1,5 @@
+using KodeFoxx.SimpleBroadcast.Core.Application.Application;
+
 namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp
 {
     public partial class Splash : Form
@@ -19,7 +21,12 @@ namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp
         }
 
         private void ShowSplashText()
-            => applicationNameAndVersionLabel.Text = ApplicationExtensions.GetVersion();
+        {
+            var response = new GetApplicationVersion.Handler()
+                .Handle(new GetApplicationVersion.Request(), CancellationToken.None)
+                .Result;
+            applicationNameAndVersionLabel.Text = response.VersionString;
+        }
 
         private void Splash_Load(object sender, EventArgs e)
         {
