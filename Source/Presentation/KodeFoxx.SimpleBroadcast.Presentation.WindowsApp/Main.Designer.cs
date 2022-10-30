@@ -34,14 +34,20 @@
             this.tabs = new System.Windows.Forms.TabControl();
             this.showsOverviewTabPage = new System.Windows.Forms.TabPage();
             this.artistsOverviewTabPage = new System.Windows.Forms.TabPage();
+            this.knownArtistsGroup = new System.Windows.Forms.GroupBox();
+            this.knownArtistsSep1 = new System.Windows.Forms.Label();
+            this.artistsOverviewQuickSearchInput = new System.Windows.Forms.TextBox();
+            this.artistsOverviewQuickSearchLabel = new System.Windows.Forms.Label();
             this.artistsOverview = new System.Windows.Forms.ListView();
             this.songsOverviewTabPage = new System.Windows.Forms.TabPage();
             this.aboutTabPage = new System.Windows.Forms.TabPage();
             this.footerPanel = new System.Windows.Forms.Panel();
+            this.sqliteCommand1 = new Microsoft.Data.Sqlite.SqliteCommand();
             this.containerPanel.SuspendLayout();
             this.bodyPanel.SuspendLayout();
             this.tabs.SuspendLayout();
             this.artistsOverviewTabPage.SuspendLayout();
+            this.knownArtistsGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // headerPanel
@@ -85,6 +91,7 @@
             this.tabs.Controls.Add(this.songsOverviewTabPage);
             this.tabs.Controls.Add(this.aboutTabPage);
             this.tabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabs.Font = new System.Drawing.Font("Segoe UI Black", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.tabs.Location = new System.Drawing.Point(16, 16);
             this.tabs.Margin = new System.Windows.Forms.Padding(16);
             this.tabs.Name = "tabs";
@@ -104,20 +111,62 @@
             // 
             // artistsOverviewTabPage
             // 
-            this.artistsOverviewTabPage.Controls.Add(this.artistsOverview);
+            this.artistsOverviewTabPage.BackColor = System.Drawing.Color.White;
+            this.artistsOverviewTabPage.Controls.Add(this.knownArtistsGroup);
             this.artistsOverviewTabPage.Location = new System.Drawing.Point(4, 29);
             this.artistsOverviewTabPage.Name = "artistsOverviewTabPage";
             this.artistsOverviewTabPage.Padding = new System.Windows.Forms.Padding(3);
             this.artistsOverviewTabPage.Size = new System.Drawing.Size(1042, 600);
             this.artistsOverviewTabPage.TabIndex = 1;
             this.artistsOverviewTabPage.Text = " Artists ";
-            this.artistsOverviewTabPage.UseVisualStyleBackColor = true;
+            // 
+            // knownArtistsGroup
+            // 
+            this.knownArtistsGroup.BackColor = System.Drawing.Color.Transparent;
+            this.knownArtistsGroup.Controls.Add(this.knownArtistsSep1);
+            this.knownArtistsGroup.Controls.Add(this.artistsOverviewQuickSearchInput);
+            this.knownArtistsGroup.Controls.Add(this.artistsOverviewQuickSearchLabel);
+            this.knownArtistsGroup.Controls.Add(this.artistsOverview);
+            this.knownArtistsGroup.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.knownArtistsGroup.Location = new System.Drawing.Point(10, 10);
+            this.knownArtistsGroup.Name = "knownArtistsGroup";
+            this.knownArtistsGroup.Padding = new System.Windows.Forms.Padding(16);
+            this.knownArtistsGroup.Size = new System.Drawing.Size(540, 584);
+            this.knownArtistsGroup.TabIndex = 1;
+            this.knownArtistsGroup.TabStop = false;
+            this.knownArtistsGroup.Text = " [Known Artists] ";
+            // 
+            // knownArtistsSep1
+            // 
+            this.knownArtistsSep1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.knownArtistsSep1.Location = new System.Drawing.Point(10, 61);
+            this.knownArtistsSep1.Name = "knownArtistsSep1";
+            this.knownArtistsSep1.Size = new System.Drawing.Size(520, 1);
+            this.knownArtistsSep1.TabIndex = 3;
+            // 
+            // artistsOverviewQuickSearchInput
+            // 
+            this.artistsOverviewQuickSearchInput.Location = new System.Drawing.Point(120, 24);
+            this.artistsOverviewQuickSearchInput.Name = "artistsOverviewQuickSearchInput";
+            this.artistsOverviewQuickSearchInput.Size = new System.Drawing.Size(404, 27);
+            this.artistsOverviewQuickSearchInput.TabIndex = 2;
+            this.artistsOverviewQuickSearchInput.TextChanged += new System.EventHandler(this.artistsOverviewQuickSearchInput_TextChanged);
+            // 
+            // artistsOverviewQuickSearchLabel
+            // 
+            this.artistsOverviewQuickSearchLabel.AutoSize = true;
+            this.artistsOverviewQuickSearchLabel.Location = new System.Drawing.Point(15, 28);
+            this.artistsOverviewQuickSearchLabel.Name = "artistsOverviewQuickSearchLabel";
+            this.artistsOverviewQuickSearchLabel.Size = new System.Drawing.Size(98, 20);
+            this.artistsOverviewQuickSearchLabel.TabIndex = 1;
+            this.artistsOverviewQuickSearchLabel.Text = "Quick Search";
             // 
             // artistsOverview
             // 
-            this.artistsOverview.Location = new System.Drawing.Point(6, 6);
+            this.artistsOverview.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.artistsOverview.Location = new System.Drawing.Point(16, 73);
             this.artistsOverview.Name = "artistsOverview";
-            this.artistsOverview.Size = new System.Drawing.Size(370, 588);
+            this.artistsOverview.Size = new System.Drawing.Size(508, 495);
             this.artistsOverview.TabIndex = 0;
             this.artistsOverview.UseCompatibleStateImageBehavior = false;
             this.artistsOverview.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.artistsOverview_AfterLabelEdit);
@@ -151,6 +200,13 @@
             this.footerPanel.Size = new System.Drawing.Size(1082, 28);
             this.footerPanel.TabIndex = 1;
             // 
+            // sqliteCommand1
+            // 
+            this.sqliteCommand1.CommandTimeout = 30;
+            this.sqliteCommand1.Connection = null;
+            this.sqliteCommand1.Transaction = null;
+            this.sqliteCommand1.UpdatedRowSource = System.Data.UpdateRowSource.None;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -158,6 +214,9 @@
             this.ClientSize = new System.Drawing.Size(1082, 753);
             this.Controls.Add(this.containerPanel);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(1100, 800);
+            this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(1100, 800);
             this.Name = "Main";
             this.Text = "Main";
@@ -165,6 +224,8 @@
             this.bodyPanel.ResumeLayout(false);
             this.tabs.ResumeLayout(false);
             this.artistsOverviewTabPage.ResumeLayout(false);
+            this.knownArtistsGroup.ResumeLayout(false);
+            this.knownArtistsGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -181,5 +242,10 @@
         private TabPage songsOverviewTabPage;
         private TabPage aboutTabPage;
         private ListView artistsOverview;
+        private GroupBox knownArtistsGroup;
+        private TextBox artistsOverviewQuickSearchInput;
+        private Label artistsOverviewQuickSearchLabel;
+        private Label knownArtistsSep1;
+        private Microsoft.Data.Sqlite.SqliteCommand sqliteCommand1;
     }
 }

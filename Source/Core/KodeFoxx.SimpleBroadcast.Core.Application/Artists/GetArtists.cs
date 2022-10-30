@@ -2,7 +2,14 @@
 
 public sealed class GetArtists
 {
-    public sealed class Request : IRequest<Response> { }
+    public sealed class Request : IRequest<Response> {
+        public Request(string? query)
+        {
+            Query = query;
+        }
+
+        public string? Query { get; }
+    }
     public sealed class Response
     {
         public IReadOnlyCollection<Artist> Artists { get; }
@@ -20,8 +27,13 @@ public sealed class GetArtists
 
         public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
-            var artists = await _db.Artists.ToListAsync();
-            return new Response(artists);
+            var artists = _db.Artists.AsQueryable();
+            if (!String.IsNullOrWhiteSpace(request.Query))
+            {
+                artists = artists.Where(a => a.Principal.ToLower().Contains(request.Query.ToLower()));
+            }            
+
+            return new Response(await artists.ToListAsync());
         }
     }
 }

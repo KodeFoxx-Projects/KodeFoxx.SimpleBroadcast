@@ -6,6 +6,8 @@ namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp;
 
 public partial class Main : BaseForm
 {
+    private Artist? SelectedArtist { get; set; }
+
     public Main(IMediator mediator) : base(mediator)
     {
         InitializeComponent();        
@@ -20,7 +22,6 @@ public partial class Main : BaseForm
     private void LoadArtists()
     {
         _artists.Clear();
-
 
         if(_artistListViewItemSelector == null)
         {
@@ -39,40 +40,12 @@ public partial class Main : BaseForm
         artistsOverview.View = View.List;
         artistsOverview.LabelEdit = true;
 
-        var response = _mediator.Send(new GetArtists.Request()).Result;
+        var query = artistsOverviewQuickSearchInput?.Text;
+        var response = _mediator.Send(new GetArtists.Request(query)).Result;
         _artists = response.Artists.ToList();
 
         FillListView(artistsOverview, _artists, _artistListViewItemSelector);
     }
-
-    private void FillListView<TObject>(
-        ListView listView, IEnumerable<TObject> objects, 
-        Func<TObject, ListViewItem> listViewItemLabelSelectorFunc)
-    {
-        listView.Items.Clear();
-        var listViewItems = objects.Select(o => listViewItemLabelSelectorFunc(o));
-        FillListView(listView, listViewItems);
-    }
-    private void FillListView(ListView listView, IEnumerable<ListViewItem> listViewItems)
-    {
-        listView.Items.Clear();
-        foreach (var listViewItem in listViewItems)
-            artistsOverview.Items.Add(listViewItem);
-    }
-
-    private void SetHeader()
-    {
-        headerPanel.BackgroundImageLayout = ImageLayout.Stretch;
-        headerPanel.BackgroundImage = Image.FromFile(
-            Path.Combine("Resources", "Images", "Header.png")
-        );        
-    }
-
-    private void artistsOverview_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-    {
-        //artistsOverview[e.ColumnIndex, e.RowIndex].
-    }
-
     private void artistsOverview_DoubleClick(object sender, EventArgs e)
     {
         if (artistsOverview.SelectedItems.Count == 0)
@@ -97,9 +70,9 @@ public partial class Main : BaseForm
     }
 
     private void artistsOverview_AfterLabelEdit(object sender, LabelEditEventArgs e)
-    {        
-        if(e.Label == null) 
-            return; 
+    {
+        if (e.Label == null)
+            return;
 
         var newValue = e.Label;
         var listViewItem = artistsOverview.Items[e.Item];
@@ -108,5 +81,33 @@ public partial class Main : BaseForm
         var response = _mediator.Send(new EditArtistPrincipal.Request(artistId, newValue)).Result;
 
         LoadArtists();
+    }
+
+    private void artistsOverviewQuickSearchInput_TextChanged(object sender, EventArgs e)
+    {
+        LoadArtists();
+    }
+
+    private void FillListView<TObject>(
+        ListView listView, IEnumerable<TObject> objects, 
+        Func<TObject, ListViewItem> listViewItemLabelSelectorFunc)
+    {
+        listView.Items.Clear();
+        var listViewItems = objects.Select(o => listViewItemLabelSelectorFunc(o));
+        FillListView(listView, listViewItems);
+    }
+    private void FillListView(ListView listView, IEnumerable<ListViewItem> listViewItems)
+    {
+        listView.Items.Clear();
+        foreach (var listViewItem in listViewItems)
+            artistsOverview.Items.Add(listViewItem);
+    }
+
+    private void SetHeader()
+    {
+        headerPanel.BackgroundImageLayout = ImageLayout.Stretch;
+        headerPanel.BackgroundImage = Image.FromFile(
+            Path.Combine("Resources", "Images", "Header.png")
+        );        
     }    
 }
