@@ -78,6 +78,20 @@ public partial class Main : BaseForm
         if (artistsOverview.SelectedItems.Count == 0)
             return;
 
+        BeginEditArtist();
+    }
+    private void artistsOverview_KeyUp(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode != Keys.Enter)
+            return;
+
+        BeginEditArtist();
+    }
+    private void BeginEditArtist()
+    {
+        if (artistsOverview.SelectedItems.Count == 0)
+            return;
+
         var selectedIndex = artistsOverview.SelectedItems[0].Index;
         artistsOverview.Items[selectedIndex].BeginEdit();
     }
@@ -94,5 +108,5 @@ public partial class Main : BaseForm
         var response = _mediator.Send(new EditArtistPrincipal.Request(artistId, newValue)).Result;
 
         LoadArtists();
-    }
+    }    
 }

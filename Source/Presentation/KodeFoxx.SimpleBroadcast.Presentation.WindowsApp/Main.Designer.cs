@@ -122,6 +122,7 @@
             this.artistsOverview.UseCompatibleStateImageBehavior = false;
             this.artistsOverview.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.artistsOverview_AfterLabelEdit);
             this.artistsOverview.DoubleClick += new System.EventHandler(this.artistsOverview_DoubleClick);
+            this.artistsOverview.KeyUp += new System.Windows.Forms.KeyEventHandler(this.artistsOverview_KeyUp);
             // 
             // songsOverviewTabPage
             // 
