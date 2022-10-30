@@ -1,5 +1,4 @@
-﻿using MediatR;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace KodeFoxx.SimpleBroadcast.Core.Application.Application;
 
