@@ -25,13 +25,21 @@ public sealed class ImportArtists
         public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
             var newArtists = request.ArtistPrincipals
+                .Distinct()
                 .Where(ap => !String.IsNullOrWhiteSpace(ap))
-                .Select(ap => Artist.Create(ap.Trim()));
+                .Where(ap => !Exists(ap))
+                .Select(ap => Artist.Create(ap.Trim()));            
 
             _db.Artists.AddRange(newArtists);
             await _db.SaveChangesAsync();
 
             return new Response() { };
+        }
+
+        private bool Exists(string principalName)
+        {
+            var exists = _db.Artists.FirstOrDefault(a => a.Principal.Equals(principalName));
+            return exists != null;
         }
     }
 }

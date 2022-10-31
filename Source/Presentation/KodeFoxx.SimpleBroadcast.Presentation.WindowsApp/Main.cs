@@ -22,31 +22,39 @@ public partial class Main : BaseForm
     }
 
     private List<Artist> _artists = new List<Artist>();
-    private Func<Artist, ListViewItem> _artistListViewItemSelector;        
+    private Func<Artist, ListViewItem> _artistListViewItemSelector;    
     private void LoadArtists()
     {
         _artists.Clear();
 
         artistsOverview.Alignment = ListViewAlignment.Left;
         artistsOverview.View = View.List;
-        artistsOverview.LabelEdit = true;
+        artistsOverview.LabelEdit = true;        
         artistsOverview.Invalidate();
 
         _artistListViewItemSelector ??= a =>
         {
             var listViewItem = new ListViewItem(a.Principal);
             listViewItem.Tag = a.Id;
-            listViewItem.Group = new ListViewGroup(a.Principal.First().ToString());
+            listViewItem.Group = new ListViewGroup(a.Principal.First().ToString());            
             return listViewItem;
-        };
+        };        
 
-        FillListView(artistsOverview, _artists, _artistListViewItemSelector);        
+        FillListView(
+            artistsOverview, 
+            _artists, 
+            _artistListViewItemSelector
+        );        
 
         var query = artistsOverviewQuickSearchInput?.Text;
         var response = _mediator.Send(new GetArtists.Request(query)).Result;
         _artists = response.Artists.ToList();
 
-        FillListView(artistsOverview, _artists, _artistListViewItemSelector);
+        FillListView(
+            artistsOverview,
+            _artists,
+            _artistListViewItemSelector           
+        );
         RemoveListViewItemIfTagIs(artistsOverview, 0L);
 
         artistsOverview.Invalidate();
@@ -202,20 +210,33 @@ public partial class Main : BaseForm
     #region ListView Helper Methods
     private void FillListView<TObject>(
         ListView listView, IEnumerable<TObject> objects, 
-        Func<TObject, ListViewItem> listViewItemLabelSelectorFunc)
+        Func<TObject, ListViewItem> listViewItemLabelSelectorFunc        
+    )
     {        
         listView.Items.Clear();
         listView.Clear();
         var listViewItems = objects.Select(o => listViewItemLabelSelectorFunc(o));
-        FillListView(listView, listViewItems);
+        var listViewGroups = listViewItems.Select(i => i.Group).Distinct();
+        FillListView(listView, listViewItems, listViewGroups);
     }
 
-    private void FillListView(ListView listView, IEnumerable<ListViewItem> listViewItems)
+    private void FillListView(
+        ListView listView, 
+        IEnumerable<ListViewItem>? listViewItems,
+        IEnumerable<ListViewGroup>? listViewGroups
+    )
     {
-        listView.Items.Clear();
-        listView.Clear();
+        listView?.Items?.Clear();
+        listView?.Groups?.Clear();
+        listView?.Clear();
+
+        foreach(var listViewGroup in listViewGroups)
+            listView.Groups.Add(listViewGroup);
+
         foreach (var listViewItem in listViewItems)
             listView.Items.Add(listViewItem);
+
+        listView.ShowGroups = true;        
     }
 
     private void RemoveListViewItemIfTagIs<TValue>(ListView listView, TValue value)

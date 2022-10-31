@@ -15,7 +15,14 @@ public sealed class EditOrCreateArtistPrincipal
             PrincipalName = principalName;
         }
     }
-    public sealed class Response { }
+    public sealed class Response 
+    {
+        public string? ErrorMessage { get; }
+        public bool HasError => ErrorMessage != null;
+
+        public Response(string? errorMessage = null)
+            => ErrorMessage = errorMessage;
+    }
 
     private sealed class Handler : IRequestHandler<Request, Response>
     {
@@ -26,20 +33,30 @@ public sealed class EditOrCreateArtistPrincipal
 
         public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
-            var artist = await _db.Artists.Where(a => a.Id == request.ArtistId).FirstOrDefaultAsync();
+            var exists = await _db.Artists.FirstOrDefaultAsync(a => a.Principal.Equals(request.PrincipalName));
+            if(exists != null)            
+                return new Response($"An artist (id: '{exists.Id}') with the same name already exists.");
 
-            if (artist != null)
+            try
             {
-                artist.EditPrincipal(request.PrincipalName);                
+                var artist = await _db.Artists.Where(a => a.Id == request.ArtistId).FirstOrDefaultAsync();
+                if (artist != null)
+                {
+                    artist.EditPrincipal(request.PrincipalName);
+                }
+                else
+                {
+                    var newArtist = Artist.Create(request.PrincipalName);
+                    _db.Artists.Add(newArtist);
+                }
+
+                await _db.SaveChangesAsync();
+                return new Response();
             } 
-            else
+            catch(Exception exception)
             {
-                var newArtist = Artist.Create(request.PrincipalName);
-                _db.Artists.Add(newArtist);
+                return new Response(exception.Message);
             }
-
-            await _db.SaveChangesAsync();
-            return new Response();
         }
     }
 }
