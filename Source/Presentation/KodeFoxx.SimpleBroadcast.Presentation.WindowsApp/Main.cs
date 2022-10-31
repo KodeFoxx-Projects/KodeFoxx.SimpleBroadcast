@@ -7,9 +7,10 @@ namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp;
 public partial class Main : BaseForm
 {
 
-#region Artists
+    #region Artists
     private Artist? SelectedArtist { get; set; }
-    private int SelectedArtistListItemIndex => artistsOverview.SelectedItems[0].Index;
+    private int SelectedArtistListViewItemIndex => artistsOverview.SelectedItems[0].Index;
+    private ListViewItem SelectedArtistListViewItem => artistsOverview.Items[SelectedArtistListViewItemIndex];
 
     public Main(IMediator mediator) : base(mediator)
     {
@@ -65,14 +66,52 @@ public partial class Main : BaseForm
             BeginEditArtist();
             return;
         }
+
+        if(e.KeyCode == Keys.Delete)
+        {
+            BeginDeleteArtist();
+            return;
+        }
     }
     private void BeginEditArtist()
     {
         if (artistsOverview.SelectedItems.Count == 0)
             return;
 
-        var selectedIndex = SelectedArtistListItemIndex;
-        artistsOverview.Items[selectedIndex].BeginEdit();
+        SelectedArtistListViewItem.BeginEdit();        
+    }
+
+    private void BeginDeleteArtist()
+    {
+        if (artistsOverview.SelectedItems.Count == 0)
+            return;
+
+        var selectedItem = SelectedArtistListViewItem;
+        var dialogResult = MessageBox.Show(
+            text: $"Are you sure you want to delete artist '{selectedItem.Text}' from your library?",
+            caption: $"Delete '{selectedItem.Text}'?",
+            buttons: MessageBoxButtons.YesNo,
+            icon: MessageBoxIcon.Question
+        );
+        if(dialogResult == DialogResult.Yes)
+        {
+            var listViewItem = SelectedArtistListViewItem;
+            var artistId = (long)listViewItem.Tag;
+
+            var response = _mediator.Send(
+                new DeleteArtist.Request(artistId))
+                .Result;
+
+            if(!response.IsDeleted)
+                MessageBox.Show(
+                    text: $"Error occured while deleting '{selectedItem.Text}' from your library. {response.Error}",
+                    caption: $"Could not delete '{selectedItem.Text}'.",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Information
+                );
+
+            LoadArtists();
+        }
     }
 
     private void artistsOverview_AfterLabelEdit(object sender, LabelEditEventArgs e)
@@ -88,7 +127,9 @@ public partial class Main : BaseForm
         var listViewItem = artistsOverview.Items[e.Item];
         var artistId = (long)listViewItem.Tag;
 
-        var response = _mediator.Send(new EditOrCreateArtistPrincipal.Request(artistId, newValue)).Result;
+        var response = _mediator.Send(
+            new EditOrCreateArtistPrincipal.Request(artistId, newValue))
+            .Result;
 
         e.CancelEdit = true;
 
@@ -109,9 +150,59 @@ public partial class Main : BaseForm
             newItem.BeginEdit();
         }
     }
-#endregion
 
-#region ListView Helper Methods
+    private void importArtistsFromFreeFormText_Click(object sender, EventArgs e)
+    {
+        var hasParseErrors = true;
+        var content = new string[] { };
+
+        using (var dialog = new FreeFormTextDialog())
+        {
+            dialog.Owner = this;
+            dialog.StartPosition = FormStartPosition.CenterParent;
+            this.Hide();
+            dialog.ShowDialog(this);
+        }
+    }
+    internal void HandleArtistsFromFreeFormText(string[] content, bool hasParseErrors, Form? sender)
+    {
+        this.Show();
+
+        if (sender != null)
+            sender.Close();        
+
+        if (hasParseErrors)
+        {
+            MessageBox.Show(
+                text: $"Error occured while importing from free-form text.",
+                caption: $"Could not import from free-form text.",
+                buttons: MessageBoxButtons.OK,
+                icon: MessageBoxIcon.Information
+            );
+            return;
+        }
+
+        try
+        {
+            var response = _mediator.Send(
+                new ImportArtists.Request(content))
+                .Result;
+
+            LoadArtists();
+        }
+        catch(Exception exception)
+        {
+            MessageBox.Show(
+                text: $"Error occured while importing from free-form text. {exception.Message}",
+                caption: $"Could not import from free-form text.",
+                buttons: MessageBoxButtons.OK,
+                icon: MessageBoxIcon.Information
+            );
+        }
+    }
+    #endregion
+
+    #region ListView Helper Methods
     private void FillListView<TObject>(
         ListView listView, IEnumerable<TObject> objects, 
         Func<TObject, ListViewItem> listViewItemLabelSelectorFunc)
@@ -151,6 +242,5 @@ public partial class Main : BaseForm
             Path.Combine("Resources", "Images", "Header.png")
         );        
     }
-    #endregion
-
+    #endregion    
 }

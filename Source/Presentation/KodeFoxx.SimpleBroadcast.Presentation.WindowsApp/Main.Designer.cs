@@ -42,7 +42,7 @@
             this.songsOverviewTabPage = new System.Windows.Forms.TabPage();
             this.aboutTabPage = new System.Windows.Forms.TabPage();
             this.footerPanel = new System.Windows.Forms.Panel();
-            this.sqliteCommand1 = new Microsoft.Data.Sqlite.SqliteCommand();
+            this.importArtistsFromFreeFormText = new System.Windows.Forms.Button();
             this.containerPanel.SuspendLayout();
             this.bodyPanel.SuspendLayout();
             this.tabs.SuspendLayout();
@@ -112,6 +112,7 @@
             // artistsOverviewTabPage
             // 
             this.artistsOverviewTabPage.BackColor = System.Drawing.Color.White;
+            this.artistsOverviewTabPage.Controls.Add(this.importArtistsFromFreeFormText);
             this.artistsOverviewTabPage.Controls.Add(this.knownArtistsGroup);
             this.artistsOverviewTabPage.Location = new System.Drawing.Point(4, 29);
             this.artistsOverviewTabPage.Name = "artistsOverviewTabPage";
@@ -171,7 +172,7 @@
             this.artistsOverview.UseCompatibleStateImageBehavior = false;
             this.artistsOverview.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.artistsOverview_AfterLabelEdit);
             this.artistsOverview.DoubleClick += new System.EventHandler(this.artistsOverview_DoubleClick);
-            this.artistsOverview.KeyUp += new System.Windows.Forms.KeyEventHandler(this.artistsOverview_KeyUp);            
+            this.artistsOverview.KeyUp += new System.Windows.Forms.KeyEventHandler(this.artistsOverview_KeyUp);
             this.artistsOverview.MouseUp += new System.Windows.Forms.MouseEventHandler(this.artistsOverview_MouseUp);
             // 
             // songsOverviewTabPage
@@ -201,12 +202,15 @@
             this.footerPanel.Size = new System.Drawing.Size(1082, 28);
             this.footerPanel.TabIndex = 1;
             // 
-            // sqliteCommand1
+            // importArtistsFromFreeFormText
             // 
-            this.sqliteCommand1.CommandTimeout = 30;
-            this.sqliteCommand1.Connection = null;
-            this.sqliteCommand1.Transaction = null;
-            this.sqliteCommand1.UpdatedRowSource = System.Data.UpdateRowSource.None;
+            this.importArtistsFromFreeFormText.Location = new System.Drawing.Point(556, 20);
+            this.importArtistsFromFreeFormText.Name = "importArtistsFromFreeFormText";
+            this.importArtistsFromFreeFormText.Size = new System.Drawing.Size(480, 42);
+            this.importArtistsFromFreeFormText.TabIndex = 2;
+            this.importArtistsFromFreeFormText.Text = "Import from free-form text";
+            this.importArtistsFromFreeFormText.UseVisualStyleBackColor = true;
+            this.importArtistsFromFreeFormText.Click += new System.EventHandler(this.importArtistsFromFreeFormText_Click);
             // 
             // Main
             // 
@@ -247,6 +251,6 @@
         private TextBox artistsOverviewQuickSearchInput;
         private Label artistsOverviewQuickSearchLabel;
         private Label knownArtistsSep1;
-        private Microsoft.Data.Sqlite.SqliteCommand sqliteCommand1;
+        private Button importArtistsFromFreeFormText;
     }
 }
