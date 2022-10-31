@@ -19,7 +19,7 @@ public partial class Main : BaseForm
 
     #region Songs
     private int SelectedSongListViewItemIndex => songsOverview.SelectedItems[0].Index;
-    private ListViewItem SelectedSongListViewItem => songsOverview.Items[SelectedArtistListViewItemIndex];
+    private ListViewItem SelectedSongListViewItem => songsOverview.Items[SelectedSongListViewItemIndex];
     private List<Song> _songs = new List<Song>();
     private Func<Song, ListViewItem> _songListViewItemSelector;
 
@@ -30,8 +30,8 @@ public partial class Main : BaseForm
 
         _songListViewItemSelector ??= s =>
         {
-            var listViewItem = new ListViewItem($"{s.Artist.Principal} - {s.Title}");
-            listViewItem.Tag = s.Id;
+            var listViewItem = new ListViewItem($"{s.Artist.Principal} - {s.Title}");            
+            listViewItem.Tag = s;
             listViewItem.Group = new ListViewGroup(s.Artist.Principal);
             return listViewItem;
         };
@@ -59,6 +59,65 @@ public partial class Main : BaseForm
     private void songsOverviewQuickSearchInput_TextChanged(object sender, EventArgs e)
     {
         LoadSongs();
+    }
+
+    private void BeginEditSong()
+    {
+        if (songsOverview.SelectedItems.Count == 0)
+            return;
+
+        SelectedSongListViewItem.BeginEdit();
+    }
+    private void songsOverview_DoubleClick(object sender, EventArgs e)
+    {
+        if (songsOverview.SelectedItems.Count == 0)
+            return;
+
+        BeginEditSong();
+    }
+
+    private void songsOverview_KeyUp(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
+        {
+            BeginEditSong();
+            return;
+        }
+
+        if (e.KeyCode == Keys.Delete)
+        {
+            // BeginDeleteSong();
+            return;
+        }
+    }
+    private void songsOverview_BeforeLabelEdit(object sender, LabelEditEventArgs e)
+    {
+        var listViewItem = songsOverview.Items[e.Item];
+        var songTitle = ((Song)listViewItem.Tag).Title;                
+        listViewItem.Text = songTitle;        
+    }
+    private void songsOverview_AfterLabelEdit(object sender, LabelEditEventArgs e)
+    {
+        var listViewItem = songsOverview.Items[e.Item];
+        var song = ((Song)listViewItem.Tag);
+
+        if (e.CancelEdit == true)
+        {
+            //LoadSongs();
+            listViewItem.Text = $"{song.Artist.Principal} - {song.Title}";            
+        } 
+        else 
+        { 
+            //var newValue = e.Label;
+
+            ////var response = _mediator.Send(
+            ////    new EditSongTitle.Request(song.Id, newValue))
+            ////    .Result;
+
+            //e.CancelEdit = true;
+
+            //LoadSongs();
+        }        
     }
     #endregion
 
@@ -193,47 +252,14 @@ public partial class Main : BaseForm
             return;
         }
     }
+
     private void BeginEditArtist()
     {
         if (artistsOverview.SelectedItems.Count == 0)
             return;
 
         SelectedArtistListViewItem.BeginEdit();        
-    }
-
-    private void BeginDeleteArtist()
-    {
-        if (artistsOverview.SelectedItems.Count == 0)
-            return;
-
-        var selectedItem = SelectedArtistListViewItem;
-        var dialogResult = MessageBox.Show(
-            text: $"Are you sure you want to delete artist '{selectedItem.Text}' from your library?",
-            caption: $"Delete '{selectedItem.Text}'?",
-            buttons: MessageBoxButtons.YesNo,
-            icon: MessageBoxIcon.Question
-        );
-        if(dialogResult == DialogResult.Yes)
-        {
-            var listViewItem = SelectedArtistListViewItem;
-            var artistId = (long)listViewItem.Tag;
-
-            var response = _mediator.Send(
-                new DeleteArtist.Request(artistId))
-                .Result;
-
-            if(!response.IsDeleted)
-                MessageBox.Show(
-                    text: $"Error occured while deleting '{selectedItem.Text}' from your library. {response.Error}",
-                    caption: $"Could not delete '{selectedItem.Text}'.",
-                    buttons: MessageBoxButtons.OK,
-                    icon: MessageBoxIcon.Information
-                );
-
-            LoadArtists();
-        }
-    }
-
+    }    
     private void artistsOverview_AfterLabelEdit(object sender, LabelEditEventArgs e)
     {
         if (e.Label == null)
@@ -254,7 +280,40 @@ public partial class Main : BaseForm
         e.CancelEdit = true;
 
         LoadArtists();
-    }    
+    }
+
+    private void BeginDeleteArtist()
+    {
+        if (artistsOverview.SelectedItems.Count == 0)
+            return;
+
+        var selectedItem = SelectedArtistListViewItem;
+        var dialogResult = MessageBox.Show(
+            text: $"Are you sure you want to delete artist '{selectedItem.Text}' from your library?",
+            caption: $"Delete '{selectedItem.Text}'?",
+            buttons: MessageBoxButtons.YesNo,
+            icon: MessageBoxIcon.Question
+        );
+        if (dialogResult == DialogResult.Yes)
+        {
+            var listViewItem = SelectedArtistListViewItem;
+            var artistId = (long)listViewItem.Tag;
+
+            var response = _mediator.Send(
+                new DeleteArtist.Request(artistId))
+                .Result;
+
+            if (!response.IsDeleted)
+                MessageBox.Show(
+                    text: $"Error occured while deleting '{selectedItem.Text}' from your library. {response.Error}",
+                    caption: $"Could not delete '{selectedItem.Text}'.",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Information
+                );
+
+            LoadArtists();
+        }
+    }
     #endregion
 
     #region ListView Helper Methods
@@ -318,5 +377,5 @@ public partial class Main : BaseForm
             Path.Combine("Resources", "Images", "Header.png")
         );        
     }
-    #endregion    
+    #endregion
 }

@@ -225,7 +225,7 @@
             this.knownSongsGroup.Location = new System.Drawing.Point(10, 10);
             this.knownSongsGroup.Name = "knownSongsGroup";
             this.knownSongsGroup.Padding = new System.Windows.Forms.Padding(16);
-            this.knownSongsGroup.Size = new System.Drawing.Size(540, 584);
+            this.knownSongsGroup.Size = new System.Drawing.Size(1020, 578);
             this.knownSongsGroup.TabIndex = 2;
             this.knownSongsGroup.TabStop = false;
             this.knownSongsGroup.Text = " [Known Songs] ";
@@ -235,14 +235,14 @@
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label1.Location = new System.Drawing.Point(10, 61);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(520, 1);
+            this.label1.Size = new System.Drawing.Size(1000, 1);
             this.label1.TabIndex = 3;
             // 
             // songsOverviewQuickSearchInput
             // 
             this.songsOverviewQuickSearchInput.Location = new System.Drawing.Point(120, 24);
             this.songsOverviewQuickSearchInput.Name = "songsOverviewQuickSearchInput";
-            this.songsOverviewQuickSearchInput.Size = new System.Drawing.Size(404, 27);
+            this.songsOverviewQuickSearchInput.Size = new System.Drawing.Size(882, 27);
             this.songsOverviewQuickSearchInput.TabIndex = 2;
             this.songsOverviewQuickSearchInput.TextChanged += new System.EventHandler(this.songsOverviewQuickSearchInput_TextChanged);
             // 
@@ -260,9 +260,13 @@
             this.songsOverview.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.songsOverview.Location = new System.Drawing.Point(16, 73);
             this.songsOverview.Name = "songsOverview";
-            this.songsOverview.Size = new System.Drawing.Size(508, 495);
+            this.songsOverview.Size = new System.Drawing.Size(985, 495);
             this.songsOverview.TabIndex = 0;
             this.songsOverview.UseCompatibleStateImageBehavior = false;
+            this.songsOverview.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.songsOverview_AfterLabelEdit);
+            this.songsOverview.BeforeLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.songsOverview_BeforeLabelEdit);
+            this.songsOverview.DoubleClick += new System.EventHandler(this.songsOverview_DoubleClick);
+            this.songsOverview.KeyUp += new System.Windows.Forms.KeyEventHandler(this.songsOverview_KeyUp);
             // 
             // aboutTabPage
             // 
