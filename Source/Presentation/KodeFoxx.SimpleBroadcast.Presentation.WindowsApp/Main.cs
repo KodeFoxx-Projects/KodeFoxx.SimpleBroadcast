@@ -153,9 +153,6 @@ public partial class Main : BaseForm
 
     private void importArtistsFromFreeFormText_Click(object sender, EventArgs e)
     {
-        var hasParseErrors = true;
-        var content = new string[] { };
-
         using (var dialog = new FreeFormTextDialog())
         {
             dialog.Owner = this;
