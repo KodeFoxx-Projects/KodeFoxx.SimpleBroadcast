@@ -34,20 +34,28 @@
             this.tabs = new System.Windows.Forms.TabControl();
             this.showsOverviewTabPage = new System.Windows.Forms.TabPage();
             this.artistsOverviewTabPage = new System.Windows.Forms.TabPage();
+            this.addNewArtist = new System.Windows.Forms.Button();
+            this.importArtistsFromFreeFormText = new System.Windows.Forms.Button();
             this.knownArtistsGroup = new System.Windows.Forms.GroupBox();
             this.knownArtistsSep1 = new System.Windows.Forms.Label();
             this.artistsOverviewQuickSearchInput = new System.Windows.Forms.TextBox();
             this.artistsOverviewQuickSearchLabel = new System.Windows.Forms.Label();
             this.artistsOverview = new System.Windows.Forms.ListView();
             this.songsOverviewTabPage = new System.Windows.Forms.TabPage();
+            this.knownSongsGroup = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.songsOverviewQuickSearchInput = new System.Windows.Forms.TextBox();
+            this.songsOverviewQuickSearchLabel = new System.Windows.Forms.Label();
+            this.songsOverview = new System.Windows.Forms.ListView();
             this.aboutTabPage = new System.Windows.Forms.TabPage();
             this.footerPanel = new System.Windows.Forms.Panel();
-            this.importArtistsFromFreeFormText = new System.Windows.Forms.Button();
             this.containerPanel.SuspendLayout();
             this.bodyPanel.SuspendLayout();
             this.tabs.SuspendLayout();
             this.artistsOverviewTabPage.SuspendLayout();
             this.knownArtistsGroup.SuspendLayout();
+            this.songsOverviewTabPage.SuspendLayout();
+            this.knownSongsGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // headerPanel
@@ -112,6 +120,7 @@
             // artistsOverviewTabPage
             // 
             this.artistsOverviewTabPage.BackColor = System.Drawing.Color.White;
+            this.artistsOverviewTabPage.Controls.Add(this.addNewArtist);
             this.artistsOverviewTabPage.Controls.Add(this.importArtistsFromFreeFormText);
             this.artistsOverviewTabPage.Controls.Add(this.knownArtistsGroup);
             this.artistsOverviewTabPage.Location = new System.Drawing.Point(4, 29);
@@ -120,6 +129,26 @@
             this.artistsOverviewTabPage.Size = new System.Drawing.Size(1042, 600);
             this.artistsOverviewTabPage.TabIndex = 1;
             this.artistsOverviewTabPage.Text = " Artists ";
+            // 
+            // addNewArtist
+            // 
+            this.addNewArtist.Location = new System.Drawing.Point(556, 20);
+            this.addNewArtist.Name = "addNewArtist";
+            this.addNewArtist.Size = new System.Drawing.Size(480, 42);
+            this.addNewArtist.TabIndex = 3;
+            this.addNewArtist.Text = "Add new artist (or right click in overview)";
+            this.addNewArtist.UseVisualStyleBackColor = true;
+            this.addNewArtist.Click += new System.EventHandler(this.addNewArtist_Click);
+            // 
+            // importArtistsFromFreeFormText
+            // 
+            this.importArtistsFromFreeFormText.Location = new System.Drawing.Point(556, 68);
+            this.importArtistsFromFreeFormText.Name = "importArtistsFromFreeFormText";
+            this.importArtistsFromFreeFormText.Size = new System.Drawing.Size(480, 42);
+            this.importArtistsFromFreeFormText.TabIndex = 2;
+            this.importArtistsFromFreeFormText.Text = "Import from free-form text";
+            this.importArtistsFromFreeFormText.UseVisualStyleBackColor = true;
+            this.importArtistsFromFreeFormText.Click += new System.EventHandler(this.importArtistsFromFreeFormText_Click);
             // 
             // knownArtistsGroup
             // 
@@ -177,12 +206,63 @@
             // 
             // songsOverviewTabPage
             // 
+            this.songsOverviewTabPage.Controls.Add(this.knownSongsGroup);
             this.songsOverviewTabPage.Location = new System.Drawing.Point(4, 29);
             this.songsOverviewTabPage.Name = "songsOverviewTabPage";
             this.songsOverviewTabPage.Size = new System.Drawing.Size(1042, 600);
             this.songsOverviewTabPage.TabIndex = 2;
             this.songsOverviewTabPage.Text = " Songs ";
             this.songsOverviewTabPage.UseVisualStyleBackColor = true;
+            // 
+            // knownSongsGroup
+            // 
+            this.knownSongsGroup.BackColor = System.Drawing.Color.Transparent;
+            this.knownSongsGroup.Controls.Add(this.label1);
+            this.knownSongsGroup.Controls.Add(this.songsOverviewQuickSearchInput);
+            this.knownSongsGroup.Controls.Add(this.songsOverviewQuickSearchLabel);
+            this.knownSongsGroup.Controls.Add(this.songsOverview);
+            this.knownSongsGroup.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.knownSongsGroup.Location = new System.Drawing.Point(10, 10);
+            this.knownSongsGroup.Name = "knownSongsGroup";
+            this.knownSongsGroup.Padding = new System.Windows.Forms.Padding(16);
+            this.knownSongsGroup.Size = new System.Drawing.Size(540, 584);
+            this.knownSongsGroup.TabIndex = 2;
+            this.knownSongsGroup.TabStop = false;
+            this.knownSongsGroup.Text = " [Known Songs] ";
+            // 
+            // label1
+            // 
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label1.Location = new System.Drawing.Point(10, 61);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(520, 1);
+            this.label1.TabIndex = 3;
+            // 
+            // songsOverviewQuickSearchInput
+            // 
+            this.songsOverviewQuickSearchInput.Location = new System.Drawing.Point(120, 24);
+            this.songsOverviewQuickSearchInput.Name = "songsOverviewQuickSearchInput";
+            this.songsOverviewQuickSearchInput.Size = new System.Drawing.Size(404, 27);
+            this.songsOverviewQuickSearchInput.TabIndex = 2;
+            this.songsOverviewQuickSearchInput.TextChanged += new System.EventHandler(this.songsOverviewQuickSearchInput_TextChanged);
+            // 
+            // songsOverviewQuickSearchLabel
+            // 
+            this.songsOverviewQuickSearchLabel.AutoSize = true;
+            this.songsOverviewQuickSearchLabel.Location = new System.Drawing.Point(15, 28);
+            this.songsOverviewQuickSearchLabel.Name = "songsOverviewQuickSearchLabel";
+            this.songsOverviewQuickSearchLabel.Size = new System.Drawing.Size(98, 20);
+            this.songsOverviewQuickSearchLabel.TabIndex = 1;
+            this.songsOverviewQuickSearchLabel.Text = "Quick Search";
+            // 
+            // songsOverview
+            // 
+            this.songsOverview.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.songsOverview.Location = new System.Drawing.Point(16, 73);
+            this.songsOverview.Name = "songsOverview";
+            this.songsOverview.Size = new System.Drawing.Size(508, 495);
+            this.songsOverview.TabIndex = 0;
+            this.songsOverview.UseCompatibleStateImageBehavior = false;
             // 
             // aboutTabPage
             // 
@@ -201,16 +281,6 @@
             this.footerPanel.Name = "footerPanel";
             this.footerPanel.Size = new System.Drawing.Size(1082, 28);
             this.footerPanel.TabIndex = 1;
-            // 
-            // importArtistsFromFreeFormText
-            // 
-            this.importArtistsFromFreeFormText.Location = new System.Drawing.Point(556, 20);
-            this.importArtistsFromFreeFormText.Name = "importArtistsFromFreeFormText";
-            this.importArtistsFromFreeFormText.Size = new System.Drawing.Size(480, 42);
-            this.importArtistsFromFreeFormText.TabIndex = 2;
-            this.importArtistsFromFreeFormText.Text = "Import from free-form text";
-            this.importArtistsFromFreeFormText.UseVisualStyleBackColor = true;
-            this.importArtistsFromFreeFormText.Click += new System.EventHandler(this.importArtistsFromFreeFormText_Click);
             // 
             // Main
             // 
@@ -231,6 +301,9 @@
             this.artistsOverviewTabPage.ResumeLayout(false);
             this.knownArtistsGroup.ResumeLayout(false);
             this.knownArtistsGroup.PerformLayout();
+            this.songsOverviewTabPage.ResumeLayout(false);
+            this.knownSongsGroup.ResumeLayout(false);
+            this.knownSongsGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -252,5 +325,11 @@
         private Label artistsOverviewQuickSearchLabel;
         private Label knownArtistsSep1;
         private Button importArtistsFromFreeFormText;
+        private GroupBox knownSongsGroup;
+        private Label label1;
+        private TextBox songsOverviewQuickSearchInput;
+        private Label songsOverviewQuickSearchLabel;
+        private ListView songsOverview;
+        private Button addNewArtist;
     }
 }

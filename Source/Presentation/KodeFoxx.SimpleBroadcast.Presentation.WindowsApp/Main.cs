@@ -6,45 +6,86 @@ namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp;
 
 public partial class Main : BaseForm
 {
-
-    #region Artists
-    private Artist? SelectedArtist { get; set; }
-    private int SelectedArtistListViewItemIndex => artistsOverview.SelectedItems[0].Index;
-    private ListViewItem SelectedArtistListViewItem => artistsOverview.Items[SelectedArtistListViewItemIndex];
-
     public Main(IMediator mediator) : base(mediator)
     {
-        InitializeComponent();        
+        InitializeComponent();
         SetWindowTitle();
         SetHeader();
 
         LoadArtists();
+        LoadSongs();
     }
 
+
+    #region Songs
+    private int SelectedSongListViewItemIndex => songsOverview.SelectedItems[0].Index;
+    private ListViewItem SelectedSongListViewItem => songsOverview.Items[SelectedArtistListViewItemIndex];
+    private List<Song> _songs = new List<Song>();
+    private Func<Song, ListViewItem> _songListViewItemSelector;
+
+    private void LoadSongs()
+    {
+        _songs.Clear();
+        PrepareOverviewListView(songsOverview);
+
+        _songListViewItemSelector ??= s =>
+        {
+            var listViewItem = new ListViewItem($"{s.Artist.Principal} - {s.Title}");
+            listViewItem.Tag = s.Id;
+            listViewItem.Group = new ListViewGroup(s.Artist.Principal);
+            return listViewItem;
+        };
+
+        FillListView(
+            songsOverview,
+            _songs,
+            _songListViewItemSelector
+        );
+
+        var query = songsOverviewQuickSearchInput?.Text;
+        var response = _mediator.Send(new GetSongs.Request(query)).Result;
+        _songs = response.Songs.ToList();
+
+        FillListView(
+            songsOverview,
+            _songs,
+            _songListViewItemSelector
+        );
+        RemoveListViewItemIfTagIs(songsOverview, 0L);
+
+        songsOverview.Invalidate();
+    }
+
+    private void songsOverviewQuickSearchInput_TextChanged(object sender, EventArgs e)
+    {
+        LoadSongs();
+    }
+    #endregion
+
+    #region Artists    
+    private int SelectedArtistListViewItemIndex => artistsOverview.SelectedItems[0].Index;
+    private ListViewItem SelectedArtistListViewItem => artistsOverview.Items[SelectedArtistListViewItemIndex];
     private List<Artist> _artists = new List<Artist>();
-    private Func<Artist, ListViewItem> _artistListViewItemSelector;    
+    private Func<Artist, ListViewItem> _artistListViewItemSelector;
+
     private void LoadArtists()
     {
         _artists.Clear();
-
-        artistsOverview.Alignment = ListViewAlignment.Left;
-        artistsOverview.View = View.List;
-        artistsOverview.LabelEdit = true;        
-        artistsOverview.Invalidate();
+        PrepareOverviewListView(artistsOverview);
 
         _artistListViewItemSelector ??= a =>
         {
             var listViewItem = new ListViewItem(a.Principal);
             listViewItem.Tag = a.Id;
-            listViewItem.Group = new ListViewGroup(a.Principal.First().ToString());            
+            listViewItem.Group = new ListViewGroup(a.Principal.First().ToString());
             return listViewItem;
-        };        
+        };
 
         FillListView(
-            artistsOverview, 
-            _artists, 
+            artistsOverview,
+            _artists,
             _artistListViewItemSelector
-        );        
+        );
 
         var query = artistsOverviewQuickSearchInput?.Text;
         var response = _mediator.Send(new GetArtists.Request(query)).Result;
@@ -53,12 +94,83 @@ public partial class Main : BaseForm
         FillListView(
             artistsOverview,
             _artists,
-            _artistListViewItemSelector           
+            _artistListViewItemSelector
         );
         RemoveListViewItemIfTagIs(artistsOverview, 0L);
 
         artistsOverview.Invalidate();
-    }    
+    }
+
+    private void artistsOverviewQuickSearchInput_TextChanged(object sender, EventArgs e)
+    {
+        LoadArtists();
+    }
+
+    private void addNewArtist_Click(object sender, EventArgs e)
+    {
+        BeginAddNewArtist();
+    }
+
+    private void artistsOverview_MouseUp(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Right)
+            BeginAddNewArtist();
+    }
+
+    private void BeginAddNewArtist()
+    {
+        var newItem = artistsOverview.Items.Add("");
+        newItem.Tag = 0L;
+        newItem.BeginEdit();
+    }
+
+    private void importArtistsFromFreeFormText_Click(object sender, EventArgs e)
+    {
+        using (var dialog = new FreeFormTextDialog())
+        {
+            dialog.Owner = this;
+            dialog.StartPosition = FormStartPosition.CenterParent;
+            this.Hide();
+            dialog.ShowDialog(this);
+        }
+    }
+
+    internal void HandleArtistsFromFreeFormText(string[] content, bool hasParseErrors, Form? sender)
+    {
+        this.Show();
+
+        if (sender != null)
+            sender.Close();
+
+        if (hasParseErrors)
+        {
+            MessageBox.Show(
+                text: $"Error occured while importing from free-form text.",
+                caption: $"Could not import from free-form text.",
+                buttons: MessageBoxButtons.OK,
+                icon: MessageBoxIcon.Information
+            );
+            return;
+        }
+
+        try
+        {
+            var response = _mediator.Send(
+                new ImportArtists.Request(content))
+                .Result;
+
+            LoadArtists();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(
+                text: $"Error occured while importing from free-form text. {exception.Message}",
+                caption: $"Could not import from free-form text.",
+                buttons: MessageBoxButtons.OK,
+                icon: MessageBoxIcon.Information
+            );
+        }
+    }
 
     private void artistsOverview_DoubleClick(object sender, EventArgs e)
     {
@@ -142,69 +254,7 @@ public partial class Main : BaseForm
         e.CancelEdit = true;
 
         LoadArtists();
-    }
-
-    private void artistsOverviewQuickSearchInput_TextChanged(object sender, EventArgs e)
-    {
-        LoadArtists();
-    }
-
-    private void artistsOverview_MouseUp(object sender, MouseEventArgs e)
-    {
-        if (e.Button == MouseButtons.Right)
-        {
-            var newItem = artistsOverview.Items.Add("");
-            newItem.Tag = 0L;
-            newItem.BeginEdit();
-        }
-    }
-
-    private void importArtistsFromFreeFormText_Click(object sender, EventArgs e)
-    {
-        using (var dialog = new FreeFormTextDialog())
-        {
-            dialog.Owner = this;
-            dialog.StartPosition = FormStartPosition.CenterParent;
-            this.Hide();
-            dialog.ShowDialog(this);
-        }
-    }
-    internal void HandleArtistsFromFreeFormText(string[] content, bool hasParseErrors, Form? sender)
-    {
-        this.Show();
-
-        if (sender != null)
-            sender.Close();        
-
-        if (hasParseErrors)
-        {
-            MessageBox.Show(
-                text: $"Error occured while importing from free-form text.",
-                caption: $"Could not import from free-form text.",
-                buttons: MessageBoxButtons.OK,
-                icon: MessageBoxIcon.Information
-            );
-            return;
-        }
-
-        try
-        {
-            var response = _mediator.Send(
-                new ImportArtists.Request(content))
-                .Result;
-
-            LoadArtists();
-        }
-        catch(Exception exception)
-        {
-            MessageBox.Show(
-                text: $"Error occured while importing from free-form text. {exception.Message}",
-                caption: $"Could not import from free-form text.",
-                buttons: MessageBoxButtons.OK,
-                icon: MessageBoxIcon.Information
-            );
-        }
-    }
+    }    
     #endregion
 
     #region ListView Helper Methods
@@ -249,6 +299,14 @@ public partial class Main : BaseForm
 
         foreach(ListViewItem item in itemsToRemove)
             listView.Items.Remove(item);
+    }
+
+    private void PrepareOverviewListView(ListView listView)
+    {
+        listView.Alignment = ListViewAlignment.Left;
+        listView.View = View.List;
+        listView.LabelEdit = true;
+        listView.Invalidate();
     }
     #endregion
 
