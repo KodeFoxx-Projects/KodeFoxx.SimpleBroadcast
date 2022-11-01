@@ -18,5 +18,11 @@
 
         public string Title { get; private set; }
         public Artist Artist { get; }
+
+        public Song EditTitle(string title)
+        {
+            Title = title.Trim();
+            return this;
+        }
     }
 }

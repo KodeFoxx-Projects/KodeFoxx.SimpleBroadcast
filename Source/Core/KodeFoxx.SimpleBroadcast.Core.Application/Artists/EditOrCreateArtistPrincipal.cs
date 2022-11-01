@@ -1,6 +1,4 @@
-﻿
-
-namespace KodeFoxx.SimpleBroadcast.Core.Application.Artists;
+﻿namespace KodeFoxx.SimpleBroadcast.Core.Application.Artists;
 
 public sealed class EditOrCreateArtistPrincipal
 {

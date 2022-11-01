@@ -263,8 +263,7 @@
             this.songsOverview.Size = new System.Drawing.Size(985, 495);
             this.songsOverview.TabIndex = 0;
             this.songsOverview.UseCompatibleStateImageBehavior = false;
-            this.songsOverview.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.songsOverview_AfterLabelEdit);
-            this.songsOverview.BeforeLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.songsOverview_BeforeLabelEdit);
+            this.songsOverview.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.songsOverview_AfterLabelEdit);            
             this.songsOverview.DoubleClick += new System.EventHandler(this.songsOverview_DoubleClick);
             this.songsOverview.KeyUp += new System.Windows.Forms.KeyEventHandler(this.songsOverview_KeyUp);
             // 

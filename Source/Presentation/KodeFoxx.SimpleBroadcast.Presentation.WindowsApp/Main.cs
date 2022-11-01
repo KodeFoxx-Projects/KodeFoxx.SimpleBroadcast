@@ -1,6 +1,8 @@
 ﻿using KodeFoxx.SimpleBroadcast.Core.Application.Artists;
 using KodeFoxx.SimpleBroadcast.Core.Domain.Artists;
 using MediatR;
+using System;
+using System.Windows.Forms;
 
 namespace KodeFoxx.SimpleBroadcast.Presentation.WindowsApp;
 
@@ -66,6 +68,9 @@ public partial class Main : BaseForm
         if (songsOverview.SelectedItems.Count == 0)
             return;
 
+        var songTitle = ((Song)SelectedSongListViewItem.Tag).Title;
+        SelectedSongListViewItem.Text = songTitle;
+
         SelectedSongListViewItem.BeginEdit();
     }
     private void songsOverview_DoubleClick(object sender, EventArgs e)
@@ -89,13 +94,7 @@ public partial class Main : BaseForm
             // BeginDeleteSong();
             return;
         }
-    }
-    private void songsOverview_BeforeLabelEdit(object sender, LabelEditEventArgs e)
-    {
-        var listViewItem = songsOverview.Items[e.Item];
-        var songTitle = ((Song)listViewItem.Tag).Title;                
-        listViewItem.Text = songTitle;        
-    }
+    }    
     private void songsOverview_AfterLabelEdit(object sender, LabelEditEventArgs e)
     {
         var listViewItem = songsOverview.Items[e.Item];
@@ -103,20 +102,30 @@ public partial class Main : BaseForm
 
         if (e.CancelEdit == true)
         {
-            //LoadSongs();
+            LoadSongs();
             listViewItem.Text = $"{song.Artist.Principal} - {song.Title}";            
         } 
         else 
         { 
-            //var newValue = e.Label;
+            var newValue = e.Label ?? listViewItem.Text;
 
-            ////var response = _mediator.Send(
-            ////    new EditSongTitle.Request(song.Id, newValue))
-            ////    .Result;
+            var response = _mediator.Send(
+                new EditSongTitle.Request(song.Id, newValue))
+                .Result;
 
-            //e.CancelEdit = true;
+            if (response.HasError)
+            {
+                MessageBox.Show(
+                    text: $"Error occured while editing title. {response.ErrorMessage}",
+                    caption: $"Could not edit title.",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Information
+                );
+            }
 
-            //LoadSongs();
+            e.CancelEdit = true;
+
+            LoadSongs();
         }        
     }
     #endregion
