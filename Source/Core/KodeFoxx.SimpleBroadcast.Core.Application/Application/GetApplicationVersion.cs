@@ -25,7 +25,7 @@ public sealed class GetApplicationVersion
                     .Replace(":", "")
                     .Replace(@"/", "");
 
-            var versionString = $"0.1-{dateTime}-PRV";
+            var versionString = $"0.2-{dateTime}-PRV";
 
 #if(DEBUG)
             versionString = $"{versionString}-DBG";

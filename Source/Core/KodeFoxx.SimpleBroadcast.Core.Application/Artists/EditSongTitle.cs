@@ -5,11 +5,13 @@ public sealed class EditSongTitle
     public sealed class Request : IRequest<Response>
     {
         public long SongId { get; }
+        public bool OverrideCasing { get; }
         public string Title { get; }
 
-        public Request(long songId, string title)
+        public Request(long songId, string title, bool overrideCasing = false)
         {
             SongId = songId;
+            OverrideCasing = overrideCasing;
             Title = title.Trim();
         }
     }
@@ -17,9 +19,16 @@ public sealed class EditSongTitle
     {
         public string? ErrorMessage { get; }
         public bool HasError => ErrorMessage != null;
+        public bool IsCasingError { get; }
 
-        public Response(string? errorMessage = null)
-            => ErrorMessage = errorMessage;
+        public Response()
+            : this(false, null) { }
+
+        public Response(string errorMessage)
+            : this(false, errorMessage) { }
+
+        public Response(bool isCasingError = true, string? errorMessage = null)
+            => (IsCasingError, ErrorMessage) = (isCasingError, errorMessage);
     }
 
     private sealed class Handler : IRequestHandler<Request, Response>
@@ -41,7 +50,7 @@ public sealed class EditSongTitle
                 if(String.IsNullOrWhiteSpace(request.Title))
                     return new Response($"Song title can not be blank.");
 
-                if (song.Title.Trim().Equals(request.Title))
+                if (song.Title.Equals(request.Title))
                     return new Response();
 
                 var artist = song.Artist;
@@ -50,9 +59,9 @@ public sealed class EditSongTitle
                     .Where(s => s.Artist.Id == artist.Id)
                     .ToListAsync();
 
-                var exists = songs.Any(s => s.Title.Equals(request.Title));
-                if (exists)
-                    return new Response($"A song (id: '{song.Id}', title: '{song.Title}') with the same name already exists.");
+                var exists = songs.Any(s => s.Title.ToLowerInvariant().Equals(request.Title.ToLowerInvariant()));
+                if (exists && !request.OverrideCasing)
+                    return new Response(true, $"A song (id: '{song.Id}', title: '{song.Title}') with the same name already exists.");
             
                 song.EditTitle(request.Title);
 

@@ -115,12 +115,41 @@ public partial class Main : BaseForm
 
             if (response.HasError)
             {
-                MessageBox.Show(
-                    text: $"Error occured while editing title. {response.ErrorMessage}",
-                    caption: $"Could not edit title.",
-                    buttons: MessageBoxButtons.OK,
-                    icon: MessageBoxIcon.Information
-                );
+                if (!response.IsCasingError)
+                {
+                    MessageBox.Show(
+                        text: $"Error occured while editing title. {response.ErrorMessage}",
+                        caption: $"Could not edit title.",
+                        buttons: MessageBoxButtons.OK,
+                        icon: MessageBoxIcon.Information
+                    );
+                } 
+                else
+                {
+                    var result = MessageBox.Show(
+                        text: $"The name you entered is exactly the same, however the casing is different. Would you like to persist the change or not?",
+                        caption: $"Would you like to change the casing in the title?",
+                        buttons: MessageBoxButtons.YesNo,
+                        icon: MessageBoxIcon.Question
+                    );
+
+                    if (result == DialogResult.Yes)
+                    {
+                        var responseIgnoreCase = _mediator.Send(
+                            new EditSongTitle.Request(song.Id, newValue, overrideCasing: true))
+                            .Result;
+
+                        if (responseIgnoreCase.HasError)
+                        {
+                            MessageBox.Show(
+                                text: $"Error occured while editing title. {response.ErrorMessage}",
+                                caption: $"Could not edit title.",
+                                buttons: MessageBoxButtons.OK,
+                                icon: MessageBoxIcon.Information
+                            );
+                        }
+                    }
+                }
             }
 
             e.CancelEdit = true;
